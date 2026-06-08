@@ -149,10 +149,11 @@ Streamlit Cloud blocks direct peer-to-peer UDP. The app uses a TURN relay server
 > _Add screenshots here by uploading images to the repo and referencing them:_
 >
 > ```md
-> ![login screen](static/login.png)
-> ![main screen](static/main.png)
-> ![sidebar metrics1](static/screenshot_sidebar1.png)
-> ![Sidebar metrics2](static/screenshot_sidebar2.png)
+![Login Screen](static/login.png)
+![Main Screen](static/main.png)
+![Sidebar Metrics](static/screenshot_sidebar1.png)
+![Sidebar Metrics 2](static/screenshot_sidebar2.png)
+
 > ```
 
 ---
