@@ -16,6 +16,8 @@ from services.coaching.llm import LLMCoach
 from services.coaching.tts import TextToSpeech
 from services.coaching.voice_pipeline import VoicePipeline, autoplay_audio
 
+
+# TURN server config — required for WebRTC to work on Streamlit Cloud
 RTC_CONFIGURATION = RTCConfiguration(
     {
         "iceServers": [
@@ -38,7 +40,6 @@ RTC_CONFIGURATION = RTCConfiguration(
         ]
     }
 )
-
 
 
 def _trigger_voice(event: str, exercise: str, metrics: dict):
@@ -87,7 +88,7 @@ def main():
             st.session_state.voice_pipeline = VoicePipeline(llm_coach, tts)
         except Exception as e:
             st.session_state.voice_pipeline = None
-            st.session_state.voice_init_error = str(e)  # surface the real error
+            st.session_state.voice_init_error = str(e)
 
     # Show init error once (helps debugging without crashing the app)
     if st.session_state.get("voice_init_error"):
@@ -121,7 +122,6 @@ def main():
                 st.session_state.last_saved_sets_completed = 0
                 st.session_state.last_notified_sets_completed = 0
                 st.session_state.last_notified_workout_complete = False
-                # Clear any stale audio from previous session
                 st.session_state.audio_to_play = None
                 st.session_state.coach_feedback = None
 
@@ -193,7 +193,7 @@ def main():
     # Play audio ONCE then immediately clear so it doesn't replay on next rerun
     if st.session_state.get("audio_to_play"):
         autoplay_audio(st.session_state.audio_to_play)
-        st.session_state.audio_to_play = None  # ← KEY FIX: clear after playing
+        st.session_state.audio_to_play = None
 
     if st.session_state.get("coach_feedback"):
         st.markdown("")
@@ -224,8 +224,8 @@ def main():
         context = webrtc_streamer(
             key="exercise-analysis",
             mode=WebRtcMode.SENDRECV,
+            rtc_configuration=RTC_CONFIGURATION,       # TURN servers added here
             video_processor_factory=VideoProcessorClass,
-            rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
             media_stream_constraints={"video": True, "audio": False},
             async_processing=True
         )
@@ -238,12 +238,10 @@ def main():
             sets_completed = st.session_state.get("sets_completed", 0)
             last_notified = st.session_state.get("last_notified_sets_completed", 0)
 
-            # Notify on each new set completion
             if sets_completed > last_notified:
                 st.session_state.last_notified_sets_completed = sets_completed
                 _trigger_voice("set_completed", exercise, {})
 
-            # Notify once on full workout completion
             target_sets = st.session_state.get("target_sets", 0)
             if (
                 target_sets > 0
@@ -253,7 +251,6 @@ def main():
                 st.session_state.last_notified_workout_complete = True
                 _trigger_voice("workout_completed", exercise, {})
 
-            # Form correction feedback from live metrics
             metrics = {
                 "depth_status": st.session_state.get("depth_status", ""),
                 "back_angle": st.session_state.get("back_angle", 180),
@@ -300,7 +297,7 @@ def main():
                 "Time (sec)": "sum"
             }).reset_index()
             agg_df.index += 1
-            st.table(agg_df, border="horizontal")
+            st.table(agg_df)
         else:
             st.info("No workout history found.")
 
