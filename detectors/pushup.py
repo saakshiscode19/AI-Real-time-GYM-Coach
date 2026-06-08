@@ -92,3 +92,4 @@ class PushUpDetector(BaseExercise):
             "hip_status": hip_status,
         }
     
+    
