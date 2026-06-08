@@ -87,7 +87,7 @@ def main():
             plan_reps = st.number_input("Reps per Set", min_value=0, max_value=50, key="plan_reps", step=1)
             st.markdown("")
 
-            if st.button("Start Workout", width="stretch", key="start_session_button"):
+            if st.button("Start Workout", key="start_session_button"):
                 st.session_state.exercise_type = plan_exercise
                 st.session_state.target_sets = int(plan_sets)
                 st.session_state.reps_per_set = int(plan_reps)
@@ -111,7 +111,7 @@ def main():
 
             st.info(f"**{exercise}** -- {sets} Sets / {reps} Reps")
 
-            if st.button("End Workout", key="end_session_button", width="stretch"):
+            if st.button("End Workout", key="end_session_button"):
                 st.session_state.workout_started = False
                 _trigger_voice("workout_completed", exercise, {})
                 st.rerun()
