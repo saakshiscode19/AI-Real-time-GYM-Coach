@@ -1,11 +1,4 @@
-libgl1
-libgles2
-libglib2.0-0t64
-libsm6
-libxext6
-libstdc++6
-libgomp1
 libegl1
 libegl-mesa0
-libgl1-mesa-glx
+libgl1
 libglib2.0-0
