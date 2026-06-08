@@ -8,3 +8,12 @@ groq>=0.12.0
 gtts==2.5.3
 python-dotenv==1.2.2
 av>=12.0.0
+mediapipe==0.10.14
+opencv-python-headless==4.10.0.84
+numpy<2.0
+protobuf<5
+streamlit
+streamlit-webrtc
+groq
+gtts
+pandas
