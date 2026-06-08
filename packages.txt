@@ -5,4 +5,7 @@ libsm6
 libxext6
 libstdc++6
 libgomp1
-
+libegl1
+libegl-mesa0
+libgl1-mesa-glx
+libglib2.0-0
