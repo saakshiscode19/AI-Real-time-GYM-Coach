@@ -1,9 +1,7 @@
 libgl1
+libgles2
 libglib2.0-0t64
 libsm6
 libxext6
 libstdc++6
 libgomp1
-libc6
-libgcc-s1
-libatomic1
